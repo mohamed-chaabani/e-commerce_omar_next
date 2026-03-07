@@ -1,0 +1,28 @@
+.FeaturedSlider.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.FeaturedSlider .mySwiper {
+  width: 100%;
+  /* height: 500px; */
+}
+
+.FeaturedSlider .mySwiper img {
+  width: 100%;
+  height: 100%;
+  /* object-fit: contain;
+  border-radius: 16px; */
+}
+
+.FeaturedSlider .swiper-slide {
+  width: 600px;
+  overflow: hidden; /* Ensure image stays within rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0; /* Optional: background for empty space */
+}

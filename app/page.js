@@ -1,65 +1,128 @@
-import Image from "next/image";
+"use client";
+import React, { useState, useEffect } from "react";
+import FeaturedCategories from "../components/home/FeaturedCategories.jsx";
+import FeaturedSlider from "../components/home/FeaturedSlider.jsx";
+import FeaturedProducts from "../components/home/FeaturedProducts.jsx";
+import NewArrivals from "../components/home/NewArrivals.jsx";
+import TrendingProducts from "../components/home/TrendingProducts.jsx";
+// import CallToAction from "../components/home/CallToAction.jsx";
+import CategoryProductsSection from "../components/home/CategoryProductsSection.jsx";
+import {
+  getAllProducts,
+  getTrendingProducts,
+  getPromoProducts,
+  getHomeCategories,
+} from "@/services/productService.js";
+// import CategoriesLvl3 from "./CategoriesLvl3.jsx";
+import FeaturedSliderV2 from "../components/home/FeaturedSliderV2.jsx";
+import Slider from "react-infinite-logo-slider";
+import { logoSliderService } from "@/services/logoSliderService.js";
+import CallToAction from "@/components/home/CallToAction.jsx";
+import CategoriesLvl3 from "@/components/CategoriesLvl3.jsx";
+export default function HomePage() {
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
+  const [trendingProducts, setTrendingProducts] = useState([]);
+  const [homeCategories, setHomeCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [logoSliders, setLogoSliders] = useState([]);
+  // No client-only gating: keep SSR and first client paint identical
 
-export default function Home() {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const [allProductsResponse, trending, homeCats, promo, logos] =
+          await Promise.all([
+            getAllProducts(),
+            getTrendingProducts(),
+            getHomeCategories(),
+            getPromoProducts(),
+            logoSliderService.getLogoSliders(),
+          ]);
+
+        const productsArray = allProductsResponse.products || [];
+
+        const featured = productsArray.filter(
+          (p) => p.promoPrice && p.promoPrice > 0,
+        );
+        // setFeaturedProducts(featured);
+        setFeaturedProducts(promo);
+
+        const newItems = productsArray.filter((p) => p.isProduit);
+        setNewArrivals(newItems);
+
+        setTrendingProducts(trending);
+        setHomeCategories(homeCats);
+        setLogoSliders(logos || []);
+      } catch (error) {
+        console.error(
+          "Échec de la récupération des produits pour la page d'accueil:",
+          error,
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="overflow-x-hidden mt-16 ">
+      <FeaturedSlider />
+      {/* <FeaturedSliderV2 /> */}
+      {/* <FeaturedCategories /> */}
+      {/* <CategoriesPage home={true} /> */}
+
+      {logoSliders.length === 1 ? (
+        <div className="w-full flex items-center justify-center py-4">
+          <img
+            src={logoSliders[0].image}
+            alt="logo"
+            className="w-36"
+            loading="lazy"
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      ) : logoSliders.length > 1 ? (
+        <Slider
+          width="250px"
+          duration={40}
+          pauseOnHover={false}
+          blurBorders={false}
+          blurBorderColor={"#fff"}
+        >
+          {logoSliders.map((logo) => (
+            <Slider.Slide key={logo._id}>
+              <img
+                src={logo.image}
+                alt="logo"
+                className="w-36"
+                loading="lazy"
+              />
+            </Slider.Slide>
+          ))}
+        </Slider>
+      ) : null}
+
+      <CategoriesLvl3 home={true} />
+      {featuredProducts.length > 0 && (
+        <FeaturedProducts products={featuredProducts} loading={loading} />
+      )}
+      {trendingProducts.length > 0 && (
+        <TrendingProducts products={trendingProducts} loading={loading} />
+      )}
+
+      {newArrivals.length > 0 && (
+        <NewArrivals products={newArrivals} loading={loading} />
+      )}
+      {homeCategories.map((category, index) => (
+        <CategoryProductsSection key={index} category={category} />
+      ))}
+
+      <CallToAction />
     </div>
   );
-}
+};
+
+
