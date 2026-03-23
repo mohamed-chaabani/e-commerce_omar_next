@@ -1,0 +1,32 @@
+/* start products Swiper */
+
+.products-Swiper .swiper-button-next,
+.products-Swiper .swiper-button-prev {
+  background-color: #1e3a8a !important; /* bg-blue-900 */
+  color: white !important;
+  border-radius: 50% !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.products-Swiper .swiper-button-next,
+.products-Swiper .swiper-button-prev {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.products-Swiper .swiper-button-next {
+  right: 10px !important;
+}
+.products-Swiper .swiper-button-prev {
+  left: 10px !important;
+}
+
+.products-Swiper .swiper-button-next svg,
+.products-Swiper .swiper-button-prev svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke: white !important;
+}
+
+/* end products Swiper */

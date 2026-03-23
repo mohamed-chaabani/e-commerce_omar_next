@@ -1,14 +1,24 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+"use client";
+import { useContext, useEffect, useState } from "react";
+import Link from "next/link";
 
 import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { ThemeContext } from "../../context/ThemeContext";
 
-import logo from "../../images/blanc.png";
-import logo_2 from "../../images/logo smap.png";
+const useIsClient = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  return isClient;
+};
+
+const logo = "/images/blanc.png";
+const logo_2 = "/images/logo%20smap.png";
 
 const Footer = () => {
   const { theme } = useContext(ThemeContext);
+  const isClient = useIsClient();
 
   return (
     <footer className="bg-gray-100 dark:bg-secondary-900 text-gray-800 dark:text-white pt-16 pb-8">
@@ -18,9 +28,10 @@ const Footer = () => {
           <div>
             <h3 className="font-bold text-xl mb-4">
               <img
-                src={theme === "dark" ? logo : logo_2}
+                src={isClient ? (theme === "dark" ? logo : logo_2) : logo_2}
                 alt="logo"
                 className=" h-8 lg:h-10 w-auto object-contain"
+                suppressHydrationWarning
               />
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
@@ -124,21 +135,21 @@ const Footer = () => {
           </p>
           <nav className="mt-3 space-x-4 text-sm">
             <Link
-              to="/about"
+              href="/about"
               className="text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:underline"
             >
               À propos
             </Link>
             <span className="text-gray-400">•</span>
             <Link
-              to="/terms"
+              href="/terms"
               className="text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:underline"
             >
               Conditions
             </Link>
             <span className="text-gray-400">•</span>
             <Link
-              to="/privacy"
+              href="/privacy"
               className="text-gray-600 dark:text-gray-300 hover:text-primary-500 dark:hover:text-primary-400 hover:underline"
             >
               Confidentialité

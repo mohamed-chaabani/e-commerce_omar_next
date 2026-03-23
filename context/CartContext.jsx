@@ -1,6 +1,4 @@
-"use client";
-
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 const initialState = {
   items: [],
@@ -14,7 +12,9 @@ const calculateCartTotals = (items) => {
     totalPrice: items.reduce(
       (total, item) =>
         total +
-        (item.promoPrice && item.promoPrice > 0 ? item.promoPrice : item.price) *
+        (item.promoPrice && item.promoPrice > 0
+          ? item.promoPrice
+          : item.price) *
           item.quantity,
       0,
     ),
@@ -24,7 +24,9 @@ const calculateCartTotals = (items) => {
 const cartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_ITEM": {
-      const getItemKey = (item) => `${item._id}-${item.selectedColor || "no-color"}`;
+      // Create a unique identifier that includes both product ID and selected color
+      const getItemKey = (item) =>
+        `${item._id}-${item.selectedColor || "no-color"}`;
 
       const existingItemIndex = state.items.findIndex(
         (item) => getItemKey(item) === getItemKey(action.payload),
@@ -42,21 +44,21 @@ const cartReducer = (state, action) => {
           items: updatedItems,
           ...calculateCartTotals(updatedItems),
         };
+      } else {
+        const newItem = {
+          ...action.payload,
+          quantity: 1,
+          cartItemId: getItemKey(action.payload), // Add unique cart item ID
+        };
+
+        const updatedItems = [...state.items, newItem];
+
+        return {
+          ...state,
+          items: updatedItems,
+          ...calculateCartTotals(updatedItems),
+        };
       }
-
-      const newItem = {
-        ...action.payload,
-        quantity: 1,
-        cartItemId: getItemKey(action.payload),
-      };
-
-      const updatedItems = [...state.items, newItem];
-
-      return {
-        ...state,
-        items: updatedItems,
-        ...calculateCartTotals(updatedItems),
-      };
     }
 
     case "REMOVE_ITEM": {
@@ -101,11 +103,12 @@ const CartContext = createContext(undefined);
 
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState, (initial) => {
-    if (typeof window === "undefined") return initial;
+    if (typeof window === "undefined") return initial; // SSR: no localStorage
     try {
       const storedCart = window.localStorage?.getItem("cart");
       if (storedCart) {
         const parsedCart = JSON.parse(storedCart);
+        // Basic validation to ensure we don't load corrupted data
         if (Array.isArray(parsedCart.items)) {
           return parsedCart;
         }
@@ -139,7 +142,8 @@ export const CartProvider = ({ children }) => {
   };
 
   const isInCart = (id, selectedColor = null) => {
-    const getItemKey = (item) => `${item._id}-${item.selectedColor || "no-color"}`;
+    const getItemKey = (item) =>
+      `${item._id}-${item.selectedColor || "no-color"}`;
     const searchKey = `${id}-${selectedColor || "no-color"}`;
     return state.items.some((item) => getItemKey(item) === searchKey);
   };

@@ -1,5 +1,6 @@
+"use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "next/navigation";
 import {
   ShoppingBag,
   Search,
@@ -208,7 +209,7 @@ const Header = () => {
                           {dropdownCategories.map((category) => (
                             <div key={category._id}>
                               <Link
-                                to={`/products?categoryId=${encodeURIComponent(
+                                href={`/products?categoryId=${encodeURIComponent(
                                   category._id,
                                 )}`}
                                 onClick={() => setIsCategoryMenuOpen(false)} // Close menu on click
@@ -221,7 +222,7 @@ const Header = () => {
                                 {category.items.map((item, itemIndex) => (
                                   <li key={itemIndex}>
                                     <Link
-                                      to={`/products?categoryId=${encodeURIComponent(
+                                      href={`/products?categoryId=${encodeURIComponent(
                                         category._id,
                                       )}&productName=${encodeURIComponent(
                                         item.name,
@@ -279,7 +280,7 @@ const Header = () => {
               </button>
 
               <Link
-                to="/cart"
+                href="/cart"
                 className="p-2 rounded-full text-secondary-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-secondary-800 transition-colors relative"
               >
                 <ShoppingBag size={20} />
@@ -399,7 +400,7 @@ const Header = () => {
                         {dropdownCategories.map((category) => (
                           <div key={category._id}>
                             <Link
-                              to={`/products?categoryId=${encodeURIComponent(
+                              href={`/products?categoryId=${encodeURIComponent(
                                 category._id,
                               )}`}
                               onClick={toggleMobileMenu}
@@ -412,7 +413,7 @@ const Header = () => {
                               {category.items.map((item, itemIndex) => (
                                 <li key={itemIndex}>
                                   <Link
-                                    to={`/products?categoryId=${encodeURIComponent(
+                                    href={`/products?categoryId=${encodeURIComponent(
                                       category._id,
                                     )}&productName=${encodeURIComponent(
                                       item.name,

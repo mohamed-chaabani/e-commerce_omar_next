@@ -1,3 +1,4 @@
+"use client"
 import { useRef } from "react";
 import ProductCard from "./ProductCard.jsx";
 
@@ -5,12 +6,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, FreeMode, Navigation } from "swiper/modules";
 
 // Import Swiper styles
-import "swiper/swiper-bundle.css";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "./horizontalProductScroll.css";
 
 const HorizontalProductScroll = ({ products, promo, nouveau }) => {
   const scrollRef = useRef(null);
-
-  console.log("products", products);
 
   return (
     <>
@@ -26,7 +29,7 @@ const HorizontalProductScroll = ({ products, promo, nouveau }) => {
           1024: { slidesPerView: 4 },
         }}
         modules={[FreeMode, Pagination, Navigation]}
-        className="products-Swiper"
+        className="products-Swiper h-[450px]"
       >
         {products.map((product, index) => (
           <SwiperSlide key={index} className="h-auto">

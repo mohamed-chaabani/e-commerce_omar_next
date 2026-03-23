@@ -1,6 +1,4 @@
-// import { get_All, post } from "../functions/restApi";
-
-import { get_All, post } from "@/functions/restApi";
+import { get_All, post } from "../functions/restApi";
 
 // const urlBase = "http://localhost:5000/api";
 const urlBase = "https://backend-omar-5d89.onrender.com/api";

@@ -1,12 +1,18 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingCart, Loader2, Check } from "lucide-react";
 import { motion } from "framer-motion";
-// import Button from "./Button.jsx";
-// import { useCart } from "../../context/CartContext.jsx";
 import Button from "./Button.jsx";
-import { useCart } from "@/context/CartContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
+
+const useIsClient = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  return isClient;
+};
 
 const formatPrice = (value) => {
   const n = Number(value);
@@ -16,11 +22,8 @@ const formatPrice = (value) => {
 const ProductCard = ({ promo, nouveau, product }) => {
   const { addItem, isInCart } = useCart();
   const [isLoading, setIsLoading] = useState(false);
-  const alreadyInCart = isInCart(product._id);
-
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
+  const isClient = useIsClient();
+  const alreadyInCart = isClient ? isInCart(product._id) : false;
 
   return (
     <motion.div
@@ -51,13 +54,9 @@ const ProductCard = ({ promo, nouveau, product }) => {
 
       {/* Product Image */}
       <Link
-        href={
-          product?.slug
-            ? `/p/${product.slug?.toString()}`
-            : `/products/${product._id}`
-        }
+        href={product?.slug ? `/p/${product.slug}` : `/products/${product._id}`}
         // className="block relative aspect-square"
-        className="block relative h-48 md:h60 lg:h-64 overflow-hidden"
+        className="block relative h-48 md:h-60 lg:h-64 overflow-hidden"
       >
         <img
           src={product?.images?.[0] || ""}
@@ -80,9 +79,7 @@ const ProductCard = ({ promo, nouveau, product }) => {
 
           <Link
             href={
-              product?.slug
-                ? `/p/${product.slug?.toString()}`
-                : `/products/${product._id}`
+              product?.slug ? `/p/${product.slug}` : `/products/${product._id}`
             }
             className="block"
           >
