@@ -75,6 +75,14 @@ const useNavigate = () => {
   };
 };
 
+const useIsClient = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  return isClient;
+};
+
 const NavLinks = ({
   isCategoryMenuOpen,
   setIsCategoryMenuOpen,
@@ -252,6 +260,8 @@ const TopBar = () => {
   // State for hiding/showing search bar on scroll
   const [isSearchVisible, setIsSearchVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  const isClient = useIsClient();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -454,11 +464,19 @@ const TopBar = () => {
           </div>
 
           <div className=" md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <img
-              src={theme === "dark" ? logo_dark : logo_lite}
-              alt="logo"
-              className="h-8 md:h-10 lg:h-12 w-auto object-contain"
-            />
+            {isClient ? (
+              <img
+                src={theme === "dark" ? logo_dark : logo_lite}
+                alt="logo"
+                className="h-8 md:h-10 lg:h-12 w-auto object-contain"
+              />
+            ) : (
+              <img
+                src={logo_lite}
+                alt="logo"
+                className="h-8 md:h-10 lg:h-12 w-auto object-contain"
+              />
+            )}
           </div>
 
           {/* Right Blue Wing */}
@@ -473,23 +491,35 @@ const TopBar = () => {
                 onClick={toggleTheme}
                 className="p-2 rounded-full text-white hover:bg-red-900 transition-colors"
                 aria-label={
-                  theme === "dark"
-                    ? "Switch to light mode"
+                  isClient
+                    ? theme === "dark"
+                      ? "Switch to light mode"
+                      : "Switch to dark mode"
                     : "Switch to dark mode"
                 }
+                suppressHydrationWarning
               >
-                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                {isClient ? (
+                  theme === "dark" ? (
+                    <Sun size={20} />
+                  ) : (
+                    <Moon size={20} />
+                  )
+                ) : (
+                  <Moon size={20} />
+                )}
               </button>
               <Link
                 to="/cart"
                 className="p-2 rounded-full text-white hover:bg-red-900 transition-colors relative"
               >
                 <ShoppingBag size={20} />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
+                <span
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                  suppressHydrationWarning
+                >
+                  {totalItems}
+                </span>
               </Link>
               <button
                 onClick={toggleMobileMenu}
@@ -522,7 +552,7 @@ const TopBar = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher des produits..."
-              className="w-full p-2 border border-gray-300 dark:border-secondary-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-secondary-800 dark:text-white"
+              className="w-full p-2 border border-gray-300 dark:border-secondary-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-secondary-800 dark:text-white bg-white text-gray-900"
             />
             <button
               type="submit"

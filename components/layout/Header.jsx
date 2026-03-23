@@ -1,5 +1,6 @@
+"use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "next/navigation";
 import {
   ShoppingBag,
   Search,

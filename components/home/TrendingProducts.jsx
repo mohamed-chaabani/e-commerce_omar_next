@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+"use client"
+import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+// import { ArrowRight } from "lucide-react";
+// import Link from "next/link";
 import HorizontalProductScroll from "../ui/HorizontalProductScroll.jsx";
 
 const TrendingProducts = ({ products, loading }) => {
