@@ -4,12 +4,27 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   darkMode: "class",
   theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+      screens: {
+        sm: "400px",
+        md: "768px",
+        lg: "1270px",
+        xl: "80rem",
+        "2xl": "80rem",
+      },
+    },
     extend: {
       screens: {
+        // This applies styles UP TO 360px
         "xs-max": { max: "360px" },
+
+        // Default breakpoints (min-width)
         sm: "400px",
         md: "768px",
         lg: "1024px",

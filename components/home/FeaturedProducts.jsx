@@ -4,7 +4,7 @@ import SkeletonCard from "../ui/SkeletonCard.jsx";
 
 const FeaturedProducts = ({ products, loading }) => {
   return (
-    <section className="py-16">
+    <section className="py-16  bg-white dark:bg-secondary-900">
       <div className="container mx-auto px-4">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-12">
           <div>

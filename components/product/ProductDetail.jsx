@@ -393,7 +393,7 @@ const ProductDetail = ({ product }) => {
               product.category.map((cat, index) => (
                 <React.Fragment key={cat._id}>
                   <Link
-                    to={`/products?categoryId=${cat._id}`}
+                    href={`/products?categoryId=${cat._id}`}
                     className="text-sm font-medium text-primary-600 dark:text-primary-400 uppercase hover:underline"
                   >
                     {cat.name}

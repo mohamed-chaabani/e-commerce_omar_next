@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "next/link";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { categoryLvl2Service } from "../../services/categoryLvl2Service";
 

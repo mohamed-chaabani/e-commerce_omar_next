@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -10,7 +9,7 @@ const CategoryProductsSection = ({ category }) => {
   }
 
   return (
-    <section className="py-12">
+    <section className="py-12  bg-white dark:bg-secondary-900">
       <div className="container mx-auto px-4">
         <div className="mb-8">
           <div className="flex justify-between items-baseline mb-2">

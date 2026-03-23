@@ -1,12 +1,9 @@
-"use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ShoppingCart, Loader2, Check } from "lucide-react";
 import { motion } from "framer-motion";
-// import Button from "./Button.jsx";
-// import { useCart } from "../../context/CartContext.jsx";
 import Button from "./Button.jsx";
-import { useCart } from "@/context/CartContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
 
 const formatPrice = (value) => {
   const n = Number(value);
@@ -17,10 +14,6 @@ const ProductCard = ({ promo, nouveau, product }) => {
   const { addItem, isInCart } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const alreadyInCart = isInCart(product._id);
-
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
 
   return (
     <motion.div
@@ -51,11 +44,7 @@ const ProductCard = ({ promo, nouveau, product }) => {
 
       {/* Product Image */}
       <Link
-        href={
-          product?.slug
-            ? `/p/${product.slug?.toString()}`
-            : `/products/${product._id}`
-        }
+        href={product?.slug ? `/p/${product.slug}` : `/products/${product._id}`}
         // className="block relative aspect-square"
         className="block relative h-48 md:h60 lg:h-64 overflow-hidden"
       >
@@ -80,9 +69,7 @@ const ProductCard = ({ promo, nouveau, product }) => {
 
           <Link
             href={
-              product?.slug
-                ? `/p/${product.slug?.toString()}`
-                : `/products/${product._id}`
+              product?.slug ? `/p/${product.slug}` : `/products/${product._id}`
             }
             className="block"
           >

@@ -1,6 +1,6 @@
 import React from "react";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useCart } from "../../context/CartContext";
 
 // Helper function to get color info
@@ -18,7 +18,12 @@ const getColorInfo = (colorName) => {
     brown: { hex: "#A52A2A", label: "Marron" },
   };
 
-  return colorMap[colorName?.toLowerCase()] || { hex: "#CCCCCC", label: colorName || "Non spécifié" };
+  return (
+    colorMap[colorName?.toLowerCase()] || {
+      hex: "#CCCCCC",
+      label: colorName || "Non spécifié",
+    }
+  );
 };
 
 const CartItem = ({ item }) => {
@@ -39,7 +44,7 @@ const CartItem = ({ item }) => {
   return (
     <div className="flex items-start py-5 border-b border-gray-200 dark:border-secondary-700">
       {/* Product image */}
-      <Link to={`/products/${item._id}`} className="shrink-0">
+      <Link href={`/products/${item._id}`} className="shrink-0">
         <img
           src={item.images?.[0] || ""}
           alt={item.name}
@@ -51,7 +56,7 @@ const CartItem = ({ item }) => {
       <div className="ml-4 flex-1">
         <div className="flex justify-between">
           <Link
-            to={`/products/${item._id}`}
+            href={`/products/${item._id}`}
             className="text-lg font-medium text-secondary-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
           >
             {item.name}
@@ -70,13 +75,15 @@ const CartItem = ({ item }) => {
           <p className="text-secondary-500 dark:text-gray-400 text-sm">
             {item.category?.name}
           </p>
-          
+
           {/* Color Display */}
           {item.selectedColor && (
             <div className="flex items-center gap-2">
               <div
                 className="w-4 h-4 rounded-full border border-gray-300 dark:border-gray-600"
-                style={{ backgroundColor: getColorInfo(item.selectedColor).hex }}
+                style={{
+                  backgroundColor: getColorInfo(item.selectedColor).hex,
+                }}
                 title={getColorInfo(item.selectedColor).label}
               ></div>
               <span className="text-sm text-secondary-600 dark:text-gray-400">

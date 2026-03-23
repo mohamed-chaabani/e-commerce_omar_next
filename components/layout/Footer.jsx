@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 import { Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { ThemeContext } from "../../context/ThemeContext";

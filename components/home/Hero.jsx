@@ -1,12 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Button from "../ui/Button.jsx";
 
 const Hero = () => {
   return (
-    <section className="relative h-[80vh] min-h-[600px] bg-secondary-900 overflow-hidden">
+    <section
+    //  className="relative h-[80vh] min-h-[600px] bg-secondary-900 overflow-hidden"
+     className="relative h-[80vh] min-h-[600px] bg-white dark:bg-secondary-900 overflow-hidden"
+    >
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -54,7 +57,7 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             className="flex flex-wrap gap-4"
           >
-            <Link to="/products">
+            <Link href="/products">
               <Button
                 size="lg"
                 variant="primary"

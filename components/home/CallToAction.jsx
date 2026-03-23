@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, Clock, Tag, Truck } from "lucide-react";
 import Link from "next/link";
 import Button from "../ui/Button.jsx";
-// import image from "../../images/63efe8c3703ce5246c1db5cf_Bx4BAwzPMaawyKtcCnxSgPBWQPvtGx4Vh4jLMz1OvQZNu7ubjBMMuf53E7D4V5QNqOHe0_xJs2pt6Rd4sMYl6_c4thKaH_QiaX1znIcWmDWcBHqkFGERi0x8S0xCTEr77Zz_eY6UcZjkj-Age9IHzoY.jpeg";
-import image from "../../public/63efe8c3703ce5246c1db5cf_Bx4BAwzPMaawyKtcCnxSgPBWQPvtGx4Vh4jLMz1OvQZNu7ubjBMMuf53E7D4V5QNqOHe0_xJs2pt6Rd4sMYl6_c4thKaH_QiaX1znIcWmDWcBHqkFGERi0x8S0xCTEr77Zz_eY6UcZjkj-Age9IHzoY.jpeg";
+import Image from "next/image";
+import image from "../../public/images/63efe8c3703ce5246c1db5cf_Bx4BAwzPMaawyKtcCnxSgPBWQPvtGx4Vh4jLMz1OvQZNu7ubjBMMuf53E7D4V5QNqOHe0_xJs2pt6Rd4sMYl6_c4thKaH_QiaX1znIcWmDWcBHqkFGERi0x8S0xCTEr77Zz_eY6UcZjkj-Age9IHzoY.jpeg";
 
 const CallToAction = () => {
   const features = [
@@ -37,7 +37,7 @@ const CallToAction = () => {
             viewport={{ once: true }}
             className="rounded-2xl overflow-hidden"
           >
-            <img
+            <Image
               src={image}
               alt="Pièces automobiles de qualité"
               className="w-full h-auto object-cover rounded-2xl"

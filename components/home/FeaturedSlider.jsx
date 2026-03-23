@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay } from "swiper/modules";
 
-import "swiper/swiper-bundle.css";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
 import { getSliders } from "../../services/sliderService";
 import SliderSkeleton from "../ui/SliderSkeleton.jsx";
 

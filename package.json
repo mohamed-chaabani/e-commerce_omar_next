@@ -1,5 +1,5 @@
 {
-  "name": "e-commerce_next",
+  "name": "next-with-tailwind-v3",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "axios": "^1.13.6",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.35.0",
+    "framer-motion": "^12.36.0",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",
     "react": "19.2.3",
@@ -20,9 +20,10 @@
     "swiper": "^12.1.2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "autoprefixer": "^10.4.27",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4"
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.19"
   }
 }

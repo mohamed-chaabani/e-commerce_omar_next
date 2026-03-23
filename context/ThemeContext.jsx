@@ -1,10 +1,9 @@
-"use client";
-
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 export const ThemeContext = createContext(undefined);
 
 export const ThemeProvider = ({ children }) => {
+  // Check if user has a saved preference or use the system preference
   const getInitialTheme = () => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme");
@@ -18,7 +17,7 @@ export const ThemeProvider = ({ children }) => {
       return prefersDark ? "dark" : "light";
     }
 
-    return "light";
+    return "light"; // Default to light theme
   };
 
   const [theme, setTheme] = useState(getInitialTheme);
@@ -26,12 +25,14 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     const root = window.document.documentElement;
 
+    // Remove previous theme class and add the new one
     if (theme === "dark") {
       root.classList.add("dark");
     } else {
       root.classList.remove("dark");
     }
 
+    // Save theme to localStorage
     localStorage.setItem("theme", theme);
   }, [theme]);
 
