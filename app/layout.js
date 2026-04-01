@@ -18,15 +18,19 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "smap",
-  description: "smap",
+  description:
+    "Société spécialisée dans la vente et la distribution de pièces détachées automobiles, proposant également un service de vente en ligne. ",
+  icons: {
+    icon: "/images/icon%20blanc.png",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body 
-      className={`${geistSans.variable} ${geistMono.variable}`}
-      // className={`bg-gray-50 dark:bg-secondary-950`}
+      <body
+        className={`${geistSans.variable} ${geistMono.variable}`}
+        // className={`bg-gray-50 dark:bg-secondary-950`}
       >
         <Providers>
           <AnimatedBackground />

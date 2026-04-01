@@ -1,5 +1,3 @@
-import HomePage from "@/pages/HomePage";
-
 import React from "react";
 // import FeaturedCategories from "@/components/home/FeaturedCategories.jsx";
 import FeaturedSlider from "@/components/home/FeaturedSlider.jsx";
@@ -14,11 +12,32 @@ import {
   getPromoProducts,
   getHomeCategories,
 } from "../services/productService.js";
-// import CategoriesLvl3 from "@/components/home/CategoriesLvl3.jsx";
 // import FeaturedSliderV2 from "@/components/home/FeaturedSliderV2.jsx";
 import { logoSliderService } from "../services/logoSliderService.js";
-import CategoriesLvl3 from "@/pages/CategoriesLvl3.jsx";
+import CategoriesLvl3 from "@/app/CategoriesLvl3.jsx";
 import LogoSliderClient from "@/components/home/LogoSliderClient.jsx";
+
+import { categoryLvl3Service } from "../services/categoryLvl3Service.js";
+
+export async function generateMetadata() {
+  const categoriesLvl3 = await categoryLvl3Service.getCategoriesLvl3();
+
+  const categoryNames = categoriesLvl3
+    .map((c) => c.name)
+    .slice(0, 5)
+    .join(", ");
+
+  // Extract subcategories from categories_list
+  const subCategories = categoriesLvl3
+    .flatMap((c) => c.categories_list?.map((sub) => sub.name) || [])
+    .slice(0, 10)
+    .join(", ");
+
+  return {
+    title: `Pièces auto | Smap Auto Pro`,
+    description: `Découvrez nos catégories de pièces détachées automobiles: ${categoryNames}. Sous-catégories: ${subCategories}. Livraison rapide et prix compétitifs.`,
+  };
+}
 
 export default async function Home() {
   // Fetch data on server side

@@ -13,7 +13,7 @@ import {
   getPromoProducts,
   getHomeCategories,
 } from "../services/productService.js";
-import CategoriesLvl3 from "./CategoriesLvl3.jsx";
+import CategoriesLvl3 from "../app/CategoriesLvl3.jsx";
 import FeaturedSliderV2 from "../components/home/FeaturedSliderV2.jsx";
 import Slider from "react-infinite-logo-slider";
 import { logoSliderService } from "../services/logoSliderService.js";
