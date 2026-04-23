@@ -1,7 +1,10 @@
 {
-	"folders": [
-		{
-			"path": ".."
-		}
-	]
+  "folders": [
+    {
+      "path": "..",
+    },
+    {
+      "path": "../../e-commerce omar/e-commerce_omar",
+    },
+  ],
 }

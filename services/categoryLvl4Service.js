@@ -2,6 +2,21 @@ import { get_All } from "../functions/restApi";
 
 // const API_URL = "http://localhost:5000/api/categories-lvl4";
 const API_URL = "https://backend-omar-5d89.onrender.com/api/categories-lvl4";
+const BASE_API_URL = "https://backend-omar-5d89.onrender.com/api";
+
+// ============================================
+// FETCH-BASED VERSIONS (for Server Components)
+// ============================================
+
+export async function getCategoryLvl4BySlugFetch(slug) {
+  const res = await fetch(
+    `${BASE_API_URL}/categories-lvl4/by-slug/${encodeURIComponent(slug)}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) throw new Error("Failed to fetch category lvl4 by slug");
+  const data = await res.json();
+  return data?.data || null;
+}
 
 const getCategoriesLvl4 = async () => {
   try {
