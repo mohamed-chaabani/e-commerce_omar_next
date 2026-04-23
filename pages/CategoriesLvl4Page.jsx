@@ -1,13 +1,16 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 // import { Helmet } from "react-helmet-async";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import GridSkeletonLoader from "../components/ui/GridSkeletonLoader.jsx";
 import { categoryLvl4Service } from "../services/categoryLvl4Service.js";
 
 const CategoriesLvl4Page = ({ home }) => {
   const params = useParams();
-  const id = params.id || params.slug;
+  const id = params?.id || params?.slug;
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,7 +57,7 @@ const CategoriesLvl4Page = ({ home }) => {
     <div
       className={`container mx-auto px-4 mt-12 ${home ? "md:py-12" : "py-12"}`}
     >
-      <Helmet>
+      {/* <Helmet>
         <title>
           {categoryLvl4
             ? `${categoryLvl4.name} | Smap Auto Pro`
@@ -74,7 +77,7 @@ const CategoriesLvl4Page = ({ home }) => {
             href={`${typeof window !== "undefined" ? window.location.origin : ""}/categories-lvl4/${encodeURIComponent(id)}`}
           />
         }
-      </Helmet>
+      </Helmet> */}
       <div className="mb-12 text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-white mb-4">
           {categoryLvl4 ? categoryLvl4.name : "Acheter par catégorie"}

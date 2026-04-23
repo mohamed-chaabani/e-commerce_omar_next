@@ -1,11 +1,11 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+// import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import TopBar from "./TopBar";
 import AnimatedBackground from "../ui/AnimatedBackground";
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-secondary-900 mt-18 ">
       <TopBar />
@@ -18,7 +18,8 @@ const MainLayout = () => {
       />
       {/* <Header /> */}
       <section className="flex-grow">
-        <Outlet />
+        {/* <Outlet /> */}
+        {children}
       </section>
       <Footer />
 

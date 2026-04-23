@@ -1,16 +1,18 @@
-import { Helmet } from "react-helmet-async";
+"use client";
+
+// import { Helmet } from "react-helmet-async";
 
 export default function PrivacyPage() {
   return (
     <div className="container mx-auto px-4 py-12 mt-12 ">
-      <Helmet>
+      {/* <Helmet>
         <title>Politique de confidentialité | Smap Auto Pro</title>
         <meta
           name="description"
           content="Lisez la politique de confidentialité de Smap Auto Pro."
         />
         <link rel="canonical" href="/privacy" />
-      </Helmet>
+      </Helmet> */}
       <h1 className="text-3xl font-bold mb-4 text-secondary-900 dark:text-white">
         Politique de confidentialité
       </h1>

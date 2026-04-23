@@ -1,7 +1,9 @@
+"use client";
+
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 import { useSearch } from "../context/SearchContext";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "next/navigation";
 import { X, Filter } from "lucide-react";
 import {
   getAllProducts,
@@ -16,7 +18,9 @@ import ProductGrid from "../components/ui/ProductGrid.jsx";
 import GridSkeletonLoader from "../components/ui/GridSkeletonLoader.jsx";
 
 const ProductsPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParamsHook = useSearchParams();
+  const searchParams = searchParamsHook || new URLSearchParams();
+  const setSearchParams = () => {}; // No-op for SSR
   const { searchQuery, searchCategoryLvl4Id } = useSearch();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -27,7 +31,8 @@ const ProductsPage = () => {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
-  const { slug } = useParams();
+  const params = useParams();
+  const slug = params?.slug;
   const [resolvedCategoryId, setResolvedCategoryId] = useState(null);
 
   // If on /category/:slug, resolve slug -> categoryId but keep URL clean
@@ -275,9 +280,9 @@ const ProductsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-12 mt-12 ">
-      <Helmet>
+      {/* <Helmet>
         <title>Produits | Smap Auto Pro</title>
-      </Helmet>
+      </Helmet> */}
       {/* <div className="flex justify-between items-center mb-8">
         <button
           className="md:hidden flex items-center text-secondary-700 dark:text-gray-300"

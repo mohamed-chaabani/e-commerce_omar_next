@@ -1,5 +1,8 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+"use client";
+
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "../context/CartContext";
@@ -7,7 +10,7 @@ import CartItem from "../components/cart/CartItem.jsx";
 import Button from "../components/ui/Button.jsx";
 
 const CartPage = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { items, totalItems, totalPrice, clearCart } = useCart();
 
   if (items.length === 0) {
@@ -58,7 +61,7 @@ const CartPage = () => {
 
             <div className="mt-6 flex justify-between">
               <Link
-                to="/products"
+                href="/products"
                 className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 <ArrowLeft size={16} className="mr-2" />
@@ -124,7 +127,7 @@ const CartPage = () => {
               size="lg"
               fullWidth
               className="mb-4"
-              onClick={() => navigate("/checkout")}
+              onClick={() => router.push("/checkout")}
             >
               Passer au checkout
             </Button>
