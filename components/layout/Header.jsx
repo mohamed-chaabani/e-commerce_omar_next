@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ShoppingBag,
   Search,
@@ -75,13 +76,13 @@ const Header = () => {
 
   const { totalItems } = useCart();
   const { theme, toggleTheme } = useTheme();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [location]);
+  }, [pathname]);
 
   // Disable body scroll when mobile menu is open
   useEffect(() => {
@@ -133,7 +134,7 @@ const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link
-              to="/"
+              href="/"
               className="flex items-baseline gap-x-1 font-bold text-secondary-900 transition-colors dark:text-white"
             >
               <span className="text-2xl font-serif-display sm:text-4xl">
@@ -146,26 +147,26 @@ const Header = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  isActive
+              <Link
+                href="/"
+                className={
+                  pathname === "/"
                     ? "text-primary-600 dark:text-primary-400 transition-colors"
                     : "text-secondary-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 }
               >
                 Accueil
-              </NavLink>
-              <NavLink
-                to="/products"
-                className={({ isActive }) =>
-                  isActive
+              </Link>
+              <Link
+                href="/products"
+                className={
+                  pathname === "/products"
                     ? "text-primary-600 dark:text-primary-400 transition-colors"
                     : "text-secondary-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 }
               >
                 Produits
-              </NavLink>
+              </Link>
               <div
                 className="relative"
                 onMouseEnter={() => {
@@ -180,14 +181,7 @@ const Header = () => {
                   }, 200);
                 }}
               >
-                <NavLink
-                  to="#"
-                  className={({ isActive }) =>
-                    `flex items-center gap-1
-                      text-secondary-800 dark:text-gray-200
-                   hover:text-primary-600 dark:hover:text-primary-400 transition-colors`
-                  }
-                >
+                <button className="flex items-center gap-1 text-secondary-800 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
                   Catégories
                   <ChevronDown
                     size={16}
@@ -195,7 +189,7 @@ const Header = () => {
                       isCategoryMenuOpen ? "rotate-180" : ""
                     }`}
                   />
-                </NavLink>
+                </button>
                 <AnimatePresence>
                   {isCategoryMenuOpen && (
                     <motion.div
@@ -313,11 +307,13 @@ const Header = () => {
                     params.set("q", searchQuery.trim());
                   }
                   // Track where user came from
-                  if (location?.pathname && location.pathname !== "/products") {
-                    params.set("from", location.pathname);
+                  if (pathname && pathname !== "/products") {
+                    params.set("from", pathname);
                   }
                   const queryString = params.toString();
-                  navigate(`/products${queryString ? `?${queryString}` : ""}`);
+                  router.push(
+                    `/products${queryString ? `?${queryString}` : ""}`,
+                  );
                   setIsSearchOpen(false);
                 }}
               >
@@ -359,7 +355,7 @@ const Header = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col">
             <div className="flex items-center justify-between h-16 md:h-20 shrink-0">
               <Link
-                to="/"
+                href="/"
                 className="text-2xl font-bold text-secondary-900 dark:text-white"
               >
                 <span className="text-[42px] font-serif-display">ZH</span>{" "}
@@ -367,30 +363,26 @@ const Header = () => {
               </Link>
             </div>
             <nav className="flex flex-col items-center justify-center flex-grow gap-8 -mt-16">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `${
-                    isActive
-                      ? "text-primary-600"
-                      : "text-secondary-800 dark:text-gray-200"
-                  } text-2xl font-medium`
-                }
+              <Link
+                href="/"
+                className={`${
+                  pathname === "/"
+                    ? "text-primary-600"
+                    : "text-secondary-800 dark:text-gray-200"
+                } text-2xl font-medium`}
               >
                 Accueil
-              </NavLink>
-              <NavLink
-                to="/products"
-                className={({ isActive }) =>
-                  `${
-                    isActive
-                      ? "text-primary-600"
-                      : "text-secondary-800 dark:text-gray-200"
-                  } text-2xl font-medium`
-                }
+              </Link>
+              <Link
+                href="/products"
+                className={`${
+                  pathname === "/products"
+                    ? "text-primary-600"
+                    : "text-secondary-800 dark:text-gray-200"
+                } text-2xl font-medium`}
               >
                 Produits
-              </NavLink>
+              </Link>
               <div>
                 <button
                   onClick={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}

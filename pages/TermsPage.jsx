@@ -1,16 +1,18 @@
-import { Helmet } from "react-helmet-async";
+"use client";
+
+// import { Helmet } from "react-helmet-async";
 
 export default function TermsPage() {
   return (
     <div className="container mx-auto px-4 py-12 mt-12 ">
-      <Helmet>
+      {/* <Helmet>
         <title>Conditions d'utilisation | Smap Auto Pro</title>
         <meta
           name="description"
           content="Lisez les conditions d'utilisation de Smap Auto Pro."
         />
         <link rel="canonical" href="/terms" />
-      </Helmet>
+      </Helmet> */}
       <h1 className="text-3xl font-bold mb-4 text-secondary-900 dark:text-white">
         Conditions d'utilisation
       </h1>

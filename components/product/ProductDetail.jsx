@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ShoppingCart,
   Share2,
@@ -10,7 +13,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FacebookShareButton, WhatsappShareButton } from "react-share";
+// import { FacebookShareButton, WhatsappShareButton } from "react-share";
 import Button from "../ui/Button.jsx";
 import { useCart } from "../../context/CartContext.jsx";
 import { categoryLvl3Service } from "../../services/categoryLvl3Service.js";
@@ -52,7 +55,7 @@ const ProductDetail = ({ product }) => {
   const [selectedColor, setSelectedColor] = useState(
     filteredColors.length > 0 ? filteredColors[0] : undefined,
   );
-  const navigate = useNavigate();
+  const router = useRouter();
   const [hideFuel, setHideFuel] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
@@ -270,10 +273,10 @@ const ProductDetail = ({ product }) => {
         };
         addItem(productWithColor);
         setIsLoading(false);
-        navigate("/cart");
+        router.push("/cart");
       }, 500);
     } else {
-      navigate("/cart");
+      router.push("/cart");
     }
   };
 

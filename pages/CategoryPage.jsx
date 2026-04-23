@@ -1,13 +1,17 @@
+"use client";
+
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ProductGrid from "../components/ui/ProductGrid.jsx";
 import { getProductsBycategoriesLvl2 } from "../services/productService.js";
 import GridSkeletonLoader from "../components/ui/GridSkeletonLoader.jsx";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const CategoryPage = () => {
-  const { categoryName } = useParams();
+  const params = useParams();
+  const categoryName = params?.categoryName;
   const ssrCat = useMemo(() => {
     if (typeof window !== "undefined" && window.__SSR_CATEGORY__) {
       return window.__SSR_CATEGORY__;
@@ -80,7 +84,7 @@ const CategoryPage = () => {
           La catégorie que vous recherchez n'existe pas ou a été supprimée.
         </p>
         <Link
-          to="/categories"
+          href="/categories"
           className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
         >
           <ArrowLeft size={16} className="mr-2" />
@@ -92,17 +96,17 @@ const CategoryPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-12 mt-12 ">
-      <Helmet>
+      {/* <Helmet>
         <title>
           {categoryName
             ? `${decodeURIComponent(categoryName).replace(/-/g, " ")} | Smap Auto Pro`
             : "Catégorie | Smap Auto Pro"}
         </title>
         {ssrCat?.canonical && <link rel="canonical" href={ssrCat.canonical} />}
-      </Helmet>
+      </Helmet> */}
       <div className="mb-8">
         <Link
-          to="/categories"
+          href="/categories"
           className="inline-flex items-center text-secondary-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
         >
           <ArrowLeft size={16} className="mr-2" />
@@ -116,7 +120,7 @@ const CategoryPage = () => {
             Aucun produit trouvé dans cette catégorie
           </p>
           <Link
-            to="/products"
+            href="/products"
             className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
           >
             Voir tous les produits

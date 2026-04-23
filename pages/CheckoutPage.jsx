@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 import { useCart } from "../context/CartContext";
 import { post } from "../functions/restApi";
 import { toast } from "react-toastify";
@@ -117,7 +119,7 @@ const getColorInfo = (colorName) => {
 const CheckoutPage = () => {
   const { items, totalPrice, clearCart } = useCart();
 
-  const navigate = useNavigate();
+  const router = useRouter();
   const [shippingInfo, setShippingInfo] = useState({
     fullName: "",
     address: "",
@@ -221,7 +223,7 @@ const CheckoutPage = () => {
       if (response && response.data) {
         clearCart();
         // TODO: Create an Order Confirmation Page
-        navigate(`/`); // Redirect to home for now
+        router.push(`/`); // Redirect to home for now
         toast.success("Votre commande a été passée avec succès!");
       } else {
         throw new Error("Une erreur inattendue est survenue.");
