@@ -257,11 +257,29 @@ const TopBar = () => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const menuTimeoutRef = useRef(null);
 
+  // Local input value - separate from Context to prevent reset issues
+  const [inputValue, setInputValue] = useState(searchQuery || "");
+
   // State for hiding/showing search bar on scroll
   const [isSearchVisible, setIsSearchVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const isClient = useIsClient();
+
+  // NOTE: Removed URL sync useEffect - it was causing infinite loops
+  // The input now relies on local state only, NOT Context state
+  // This prevents the input from being reset while typing
+
+  // Initialize inputValue from URL on mount (only once)
+  const searchParamsFromUrl = useSearchParams();
+  useEffect(() => {
+    const qFromUrl = searchParamsFromUrl.get("q");
+    if (qFromUrl) {
+      setInputValue(qFromUrl);
+      setSearchQuery(qFromUrl); // Also update Context
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -345,6 +363,9 @@ const TopBar = () => {
   // Drive navigation based on search query changes (global search flow)
   useEffect(() => {
     const trimmed = (searchQuery || "").trim();
+    const currentSearchParams = new URLSearchParams(location.search);
+    const fromPath = currentSearchParams.get("from");
+
     if (trimmed) {
       // If we are already in search mode and left /products (e.g. opened a product),
       // don't force navigation back to /products. Let the other effect clear search state.
@@ -377,8 +398,13 @@ const TopBar = () => {
         }
       }
 
+      // Track where user came from (if not on products page)
+      if (location.pathname !== "/products") {
+        params.set("from", location.pathname);
+      }
+
       const targetQuery = params.toString();
-      const currentQ = new URLSearchParams(location.search).get("q") || "";
+      const currentQ = currentSearchParams.get("q") || "";
       const nextUrl = targetQuery ? `/products?${targetQuery}` : "/products";
 
       if (location.pathname !== "/products" || currentQ !== trimmed) {
@@ -387,7 +413,9 @@ const TopBar = () => {
         });
       }
     } else if (isSearching && location.pathname === "/products") {
-      const back = prevRoute || "/";
+      // User cleared search - go back to where they came from (from param)
+      const back = fromPath || prevRoute || "/";
+
       endSearch();
       navigate(back);
     }
@@ -415,15 +443,40 @@ const TopBar = () => {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const match = location.pathname.match(/^\/categories-lvl4\/([^/]+)$/);
-    const fromPath = match?.[1];
-    if (fromPath) {
-      return;
+  // Helper to build search URL - preserves existing params
+  const buildSearchUrl = (query) => {
+    // Start with existing params to preserve 'from' and other filters
+    const params = new URLSearchParams(location.search);
+
+    if (query?.trim()) {
+      params.set("q", query.trim());
+    } else {
+      params.delete("q");
     }
 
-    navigate(`/products`);
+    // Track where user came from (only if not already set and not on products)
+    const existingFrom = params.get("from");
+    if (
+      !existingFrom &&
+      location.pathname &&
+      location.pathname !== "/products"
+    ) {
+      params.set("from", location.pathname);
+    }
+
+    const queryString = params.toString();
+    return `/products${queryString ? `?${queryString}` : ""}`;
+  };
+
+  // Live search: update local input immediately, sync to Context
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    // Update local input immediately (for responsive UI)
+    setInputValue(value);
+
+    // Update Context state (triggers navigation useEffect)
+    setSearchQuery(value);
   };
 
   return (
@@ -514,12 +567,14 @@ const TopBar = () => {
                 className="p-2 rounded-full text-white hover:bg-red-900 transition-colors relative"
               >
                 <ShoppingBag size={20} />
-                <span
-                  className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-                  suppressHydrationWarning
-                >
-                  {totalItems}
-                </span>
+                {totalItems > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                    suppressHydrationWarning
+                  >
+                    {totalItems}
+                  </span>
+                )}
               </Link>
               <button
                 onClick={toggleMobileMenu}
@@ -546,16 +601,16 @@ const TopBar = () => {
         }}
       >
         <div className="max-w-7xl mx-auto px-4 py-2">
-          <form className="flex items-center" onSubmit={handleSearchSubmit}>
+          <form className="flex items-center">
             <input
               type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={inputValue}
+              onChange={handleSearchChange}
               placeholder="Rechercher des produits..."
               className="w-full p-2 border border-gray-300 dark:border-secondary-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-secondary-800 dark:text-white bg-white text-gray-900"
             />
             <button
-              type="submit"
+              type="button"
               className="bg-blue-900 hover:bg-blue-700 text-white p-2 rounded-r-md transition-colors"
             >
               <Search size={20} />

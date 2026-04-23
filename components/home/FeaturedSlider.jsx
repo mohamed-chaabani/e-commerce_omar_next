@@ -73,7 +73,21 @@ export default function FeaturedSlider() {
           >
             {sliders.map((slider, index) => (
               <SwiperSlide key={slider._id}>
-                <img src={slider.image} alt={`Slider image ${index + 1}`} />
+               <img
+                  className="hidden lg:block"
+                  src={slider.lg ? slider.lg : slider.image}
+                  alt={`Slider image ${index + 1}`}
+                />
+                <img
+                  className="hidden md:block lg:hidden"
+                  src={slider.md ? slider.md : slider.image}
+                  alt={`Slider image ${index + 1}`}
+                />
+                <img
+                  className="block md:hidden"
+                  src={slider.sm ? slider.sm : slider.image}
+                  alt={`Slider image ${index + 1}`}
+                />
               </SwiperSlide>
             ))}
           </Swiper>

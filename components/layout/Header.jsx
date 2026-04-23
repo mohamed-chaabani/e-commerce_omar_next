@@ -304,7 +304,23 @@ const Header = () => {
           {/* Search Bar */}
           {isSearchOpen && (
             <div className="absolute top-full left-0 right-0 bg-white dark:bg-secondary-900 shadow-md p-4 animate-fade-in">
-              <form className="flex items-center">
+              <form
+                className="flex items-center"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const params = new URLSearchParams();
+                  if (searchQuery?.trim()) {
+                    params.set("q", searchQuery.trim());
+                  }
+                  // Track where user came from
+                  if (location?.pathname && location.pathname !== "/products") {
+                    params.set("from", location.pathname);
+                  }
+                  const queryString = params.toString();
+                  navigate(`/products${queryString ? `?${queryString}` : ""}`);
+                  setIsSearchOpen(false);
+                }}
+              >
                 <input
                   type="text"
                   value={searchQuery}
