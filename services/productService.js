@@ -40,6 +40,31 @@ export async function getCategoryBySlugFetch(slug) {
   return res.json();
 }
 
+export async function getProductBySlugFetch(slug) {
+  console.log("slug", slug);  
+  const res = await fetch(
+    `${PRODUCTS_URL}/by-slug/${encodeURIComponent(slug)}`,
+    {
+      cache: "force-cache",
+      next: { revalidate: 60 }, // Cache for 1 minute (product data changes frequently)
+    },
+  );
+  if (!res.ok) throw new Error("Failed to fetch product by slug");
+  const data = await res.json();
+  console.log("data", data);
+  return data || null;
+}
+
+export async function getProductByIdFetch(id) {
+  const res = await fetch(`${PRODUCTS_URL}/${encodeURIComponent(id)}`, {
+    cache: "force-cache",
+    next: { revalidate: 60 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch product by id");
+  const data = await res.json();
+  return data?.data || null;
+}
+
 export async function getProductsPaginatedFetch({
   page = 1,
   limit = 20,
