@@ -1,53 +1,52 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { motion } from "framer-motion";
-import { categoryLvl3Service } from "../services/categoryLvl3Service.js";
-import GridSkeletonLoader from "../components/ui/GridSkeletonLoader.jsx";
+import {
+  getCategoryLvl3BySlugFetch,
+  getCategoryLvl3ByIdFetch,
+} from "@/services/categoryLvl3Service";
+import GridSkeletonLoader from "@/components/ui/GridSkeletonLoader";
 
-const CategoriesPage = ({ home }) => {
-  const params = useParams();
-  const id = params?.id; // Could be ID or slug
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [categoryLvl3, setCategoryLvl3] = useState(null);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        if (id) {
-          const isObjectId = /^[a-f\d]{24}$/i.test(id);
-          const lvl3Data = isObjectId
-            ? await categoryLvl3Service.getCategoryLvl3ById(id)
-            : await categoryLvl3Service.getCategoryLvl3BySlug(id);
-          setCategoryLvl3(lvl3Data);
+  let categoryLvl3 = null;
+  try {
+    const isObjectId = /^[a-f\d]{24}$/i.test(slug);
+    categoryLvl3 = isObjectId
+      ? await getCategoryLvl3ByIdFetch(slug)
+      : await getCategoryLvl3BySlugFetch(slug);
+  } catch (e) {
+    // Silent fail
+  }
 
-          if (
-            lvl3Data &&
-            lvl3Data.categories_list &&
-            lvl3Data.categories_list.length > 0
-          ) {
-            setCategories(lvl3Data.categories_list);
-          } else {
-            setCategories([]);
-          }
-        } else {
-          setCategories([]);
-        }
-        setError(null);
-      } catch (err) {
-        setError("Échec du chargement des catégories.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const categoryName = categoryLvl3?.name || slug;
 
-    fetchData();
-  }, [id]);
+  return {
+    title: `${categoryName} | Smap Auto Pro`,
+    description: categoryLvl3?.name
+      ? `Découvrez tous nos produits ${categoryLvl3.name}. Large choix de pièces détachées ${categoryLvl3?.categories_list?.map((cat) => cat.name).join(", ")} avec livraison rapide en Tunisie.`
+      : "Parcourez notre collection complète de produits organisés par catégories.",
+  };
+}
+
+async function CategoryLvl3Data({ slug }) {
+  let categoryLvl3 = null;
+  let categories = [];
+  let error = null;
+
+  try {
+    const isObjectId = /^[a-f\d]{24}$/i.test(slug);
+    categoryLvl3 = isObjectId
+      ? await getCategoryLvl3ByIdFetch(slug)
+      : await getCategoryLvl3BySlugFetch(slug);
+
+    if (categoryLvl3 && categoryLvl3.categories_list) {
+      categories = categoryLvl3.categories_list;
+    }
+  } catch (err) {
+    error = "Échec du chargement des catégories.";
+    console.error(err);
+  }
 
   if (error) {
     return (
@@ -58,9 +57,7 @@ const CategoriesPage = ({ home }) => {
   }
 
   return (
-    <div
-      className={`container mx-auto px-4 mt-12 ${home ? "md:py-12" : "py-12"}`}
-    >
+    <div className="container mx-auto px-4 mt-12 py-12">
       <div className="mb-12 text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-white mb-4">
           {categoryLvl3 ? categoryLvl3.name : "Acheter par catégorie"}
@@ -72,18 +69,15 @@ const CategoriesPage = ({ home }) => {
         </p>
       </div>
 
-      {loading ? (
+      {categories.length === 0 ? (
         <GridSkeletonLoader />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category, index) => (
-            <motion.div
+            <div
               key={category._id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
               className="group"
+              style={{ animationDelay: `${index * 0.1}s` }}
             >
               <Link
                 href={
@@ -93,7 +87,7 @@ const CategoriesPage = ({ home }) => {
                 }
                 className="block h-full"
               >
-                <div className="relative overflow-hidden rounded-lg h-full shadow-sm group-hover:shadow-md transition-shadow duration-300">
+                <div className="relative overflow-hidden rounded-lg h-full shadow-sm hover:shadow-md transition-shadow duration-300">
                   <div className="aspect-[16/9]">
                     <img
                       src={category.image}
@@ -110,12 +104,20 @@ const CategoriesPage = ({ home }) => {
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}
     </div>
   );
-};
+}
 
-export default CategoriesPage;
+export default async function CategoriesPage({ params }) {
+  const { slug } = await params;
+
+  return (
+    <Suspense fallback={<GridSkeletonLoader />}>
+      <CategoryLvl3Data slug={slug} />
+    </Suspense>
+  );
+}

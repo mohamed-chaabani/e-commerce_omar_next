@@ -14,14 +14,87 @@ export async function generateMetadata({ searchParams }) {
   // Next.js 15+: searchParams is a Promise
   const params = await searchParams;
   const searchQuery = params?.q;
+  const categoryId = params?.categoryId;
+  const productName = params?.productName;
+  const categoriesLvl2 = params?.categoriesLvl2;
+  const categoryLvl4Id = params?.categoryLvl4Id;
+  const page = Math.max(1, Number(params?.page) || 1);
+  const limit = 20; // Same as ProductsData
+
+  // Fetch products for metadata - SAME LOGIC AS ProductsData
+  let productsArray = [];
+  try {
+    if (searchQuery) {
+      const data = await searchProductsFetch(searchQuery, categoryLvl4Id);
+      productsArray = Array.isArray(data) ? data : data?.products || [];
+    } else if (categoriesLvl2) {
+      const data = await getProductsBycategoriesLvl2Fetch(
+        categoriesLvl2,
+        categoryLvl4Id,
+      );
+      productsArray = Array.isArray(data) ? data : data?.products || [];
+    } else if (categoryId || productName) {
+      const data = await getProductDetailsFetch(categoryId, productName);
+      productsArray = Array.isArray(data) ? data : data?.products || [];
+    } else {
+      const data = await getProductsPaginatedFetch({
+        page,
+        limit,
+        categoryLvl4Id,
+      });
+      productsArray = Array.isArray(data) ? data : data?.products || [];
+    }
+  } catch (e) {
+    // Silently fail - metadata is not critical
+  }
+
+  // Extract references and names from CURRENT page products
+  const productNames = productsArray
+    .slice(0, 4) // First 4 products shown on page
+    .map((p) => p.name)
+    .filter(Boolean);
+  const productRefs = productsArray
+    .slice(0, 4)
+    .map((p) => p.reference)
+    .filter(Boolean);
+
+  // Dynamic title based on search/filters
+  let title = "Produits";
+  if (searchQuery) {
+    title = `${searchQuery}`;
+  } else if (productName) {
+    title = `${productName}`;
+  } else if (categoriesLvl2) {
+    title = `Catégorie ${categoriesLvl2}`;
+  }
+  if (page > 1) {
+    title += ` - Page ${page}`;
+  }
+  title += " | Smap Auto Pro";
+
+  // Description with actual products from this page
+  const description =
+    productNames.length > 0
+      ? `Découvrez ${productNames.join(", ")}. Références: ${productRefs.join(", ") || "OEM"}. ${page > 1 ? `Page ${page}. ` : ""}Prix compétitifs Tunisie.`
+      : "Découvrez notre catalogue de pièces détachées automobiles. Livraison rapide et prix compétitifs.";
+
+  // Keywords for SEO
+  const keywords = [
+    ...productNames.slice(0, 4),
+    ...productRefs.slice(0, 4),
+    "pièces auto",
+    "pièces détachées",
+    "Tunisie",
+    ...(searchQuery ? [searchQuery] : []),
+    ...(productName ? [productName] : []),
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   return {
-    title: searchQuery
-      ? `Résultats pour "${searchQuery}" | Smap Auto Pro`
-      : "Produits | Smap Auto Pro",
-    description: searchQuery
-      ? `Résultats de recherche pour "${searchQuery}". Découvrez nos pièces détachées automobiles.`
-      : "Découvrez notre catalogue de pièces détachées automobiles. Livraison rapide et prix compétitifs.",
+    title,
+    description,
+    keywords,
   };
 }
 
