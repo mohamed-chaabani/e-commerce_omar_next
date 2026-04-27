@@ -11,9 +11,25 @@ const BASE_API_URL = "https://backend-omar-5d89.onrender.com/api";
 export async function getCategoryLvl4BySlugFetch(slug) {
   const res = await fetch(
     `${BASE_API_URL}/categories-lvl4/by-slug/${encodeURIComponent(slug)}`,
-    { cache: "no-store" },
+    {
+      cache: "force-cache",
+      next: { revalidate: 300 }, // Cache for 5 minutes
+    },
   );
   if (!res.ok) throw new Error("Failed to fetch category lvl4 by slug");
+  const data = await res.json();
+  return data?.data || null;
+}
+
+export async function getCategoryLvl4ByIdFetch(id) {
+  const res = await fetch(
+    `${BASE_API_URL}/categories-lvl4/${encodeURIComponent(id)}`,
+    {
+      cache: "force-cache",
+      next: { revalidate: 300 },
+    },
+  );
+  if (!res.ok) throw new Error("Failed to fetch category lvl4 by id");
   const data = await res.json();
   return data?.data || null;
 }

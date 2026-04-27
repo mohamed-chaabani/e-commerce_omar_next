@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import NextLink from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ThemeContext } from "../../context/ThemeContext";
@@ -262,7 +262,8 @@ const TopBar = () => {
 
   // State for hiding/showing search bar on scroll
   const [isSearchVisible, setIsSearchVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
+  const isTickingRef = useRef(false);
 
   const isClient = useIsClient();
 
@@ -328,23 +329,38 @@ const TopBar = () => {
 
   // Handle scroll to show/hide search bar
   useEffect(() => {
+    const TOP_SHOW_PX = 10;
+    const HIDE_AFTER_PX = 100;
+    const DELTA_THRESHOLD_PX = 6;
+
+    lastScrollYRef.current = window.scrollY;
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // If scroll is at the top (less than 10px), show the bar
-      if (currentScrollY < 10) {
-        setIsSearchVisible(true);
-      }
-      // If scrolling down, hide the bar
-      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsSearchVisible(false);
-      }
-      // If scrolling up, show the bar
-      else if (currentScrollY < lastScrollY) {
-        setIsSearchVisible(true);
-      }
+      if (isTickingRef.current) return;
+      isTickingRef.current = true;
 
-      setLastScrollY(currentScrollY);
+      window.requestAnimationFrame(() => {
+        const prevScrollY = lastScrollYRef.current;
+        const delta = currentScrollY - prevScrollY;
+
+        if (currentScrollY < TOP_SHOW_PX) {
+          setIsSearchVisible(true);
+        } else if (
+          delta > DELTA_THRESHOLD_PX &&
+          currentScrollY > HIDE_AFTER_PX
+        ) {
+          // Scrolling down
+          setIsSearchVisible(false);
+        } else if (delta < -DELTA_THRESHOLD_PX) {
+          // Scrolling up
+          setIsSearchVisible(true);
+        }
+
+        lastScrollYRef.current = currentScrollY;
+        isTickingRef.current = false;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -352,7 +368,7 @@ const TopBar = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
     const match = location.pathname.match(/^\/categories-lvl4\/([^/]+)$/);
@@ -589,7 +605,7 @@ const TopBar = () => {
 
       {/* Search Bar - Sticky below header */}
       <div
-        className={`sticky top-16 left-0 right-0 z-30 bg-white dark:bg-secondary-900 shadow-md transition-all duration-300 ease-in-out ${
+        className={`fixed top-16 left-0 right-0 z-30 bg-white dark:bg-secondary-900 shadow-md transition-all duration-300 ease-in-out ${
           isSearchVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"

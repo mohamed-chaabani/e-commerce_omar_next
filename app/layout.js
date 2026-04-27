@@ -9,8 +9,6 @@ import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 import TopBar from "@/components/layout/TopBar";
 
-import Header from "@/components/layout/Header";
-
 import Footer from "@/components/layout/Footer";
 
 const geistSans = Geist({
@@ -49,8 +47,7 @@ export default function RootLayout({ children }) {
           <Suspense fallback={null}>
             <TopBar />
           </Suspense>
-          {children}
-
+          <div className="pt-12">{children}</div>
           <Footer />
         </Providers>
       </body>

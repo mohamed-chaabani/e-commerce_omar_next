@@ -15,6 +15,7 @@ const ProductsClient = ({
   productName,
   searchQuery,
   effectiveCategoryLvl4Id,
+  categoryName,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,9 +35,12 @@ const ProductsClient = ({
 
   useEffect(() => {
     if (typeof document !== "undefined") {
-      document.title = "Produits | Smap Auto Pro";
+      const title = categoryName
+        ? `${categoryName} | Smap Auto Pro`
+        : "Produits | Smap Auto Pro";
+      document.title = title;
     }
-  }, []);
+  }, [categoryName]);
 
   // Sync products when initialProducts changes (e.g., after search)
   useEffect(() => {
@@ -152,6 +156,25 @@ const ProductsClient = ({
 
         {/* Product Grid */}
         <div className="flex-1">
+          {/* Category Header */}
+          {categoryName && (
+            <div className="mb-6">
+              <a
+                href="/products"
+                className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-4 transition-colors"
+              >
+                ← Retour aux produits
+              </a>
+              <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-white">
+                {categoryName}
+              </h1>
+              <p className="text-secondary-600 dark:text-gray-400 mt-2">
+                {total} produit{total !== 1 ? "s" : ""} disponible
+                {total !== 1 ? "s" : ""}
+              </p>
+            </div>
+          )}
+
           {filteredProducts.length === 0 ? (
             <div className="text-center py-16">
               <h2 className="text-2xl font-semibold text-secondary-900 dark:text-white mb-2">
