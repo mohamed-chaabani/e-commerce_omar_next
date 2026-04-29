@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
           <Suspense fallback={null}>
             <TopBar />
           </Suspense>
-          <div className="pt-12">{children}</div>
+          <div className="pt-12 min-h-screen">{children}</div>
           {/* WhatsApp Fixed Button */}
           <a
             href="https://wa.me/55515331"

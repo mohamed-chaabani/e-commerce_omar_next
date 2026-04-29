@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, Tag, Truck } from "lucide-react";

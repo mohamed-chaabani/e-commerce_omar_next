@@ -24,7 +24,10 @@ const CategoriesLvl3Content = async ({ home }) => {
   }
 
   return (
-    <section className="bg-white dark:bg-secondary-900">
+    <section 
+    className="bg-white dark:bg-secondary-900"
+    >
+
       <div className={`container mx-auto px-4 ${home ? "md:py-12" : "py-12"}`}>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-1 sm:gap-8 mt-7 ">
           {categoriesLvl3.map((category, index) => (

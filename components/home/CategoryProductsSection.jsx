@@ -24,7 +24,7 @@ const CategoryProductsSection = ({ category }) => {
               {category.category}
             </motion.h2>
             <Link
-              href={`/category/${encodeURIComponent(category.category)}`}
+              href={`/products?categoriesLvl2=${encodeURIComponent(category.category)}`}
               className="text-sm font-semibold text-customRed hover:text-red-700 dark:hover:text-red-400 transition-colors whitespace-nowrap"
             >
               Afficher tout &rarr;

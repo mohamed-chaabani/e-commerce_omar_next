@@ -61,10 +61,15 @@ export default async function Home() {
   const logoSliders = logos || [];
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-secondary-950">
+    <main
+      className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-secondary-950"
+
+    >
       {/* <HomePage /> */}
       <div className="overflow-x-hidden mt-16 ">
-        <section className="bg-white dark:bg-secondary-900">
+        <section
+        className="bg-white dark:bg-secondary-900"
+        >
           <FeaturedSlider />
           <LogoSliderClient logoSliders={logoSliders} />
         </section>

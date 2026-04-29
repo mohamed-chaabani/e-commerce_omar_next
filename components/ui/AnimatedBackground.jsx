@@ -173,6 +173,19 @@ const AnimatedBackground = ({
 
   return (
     <div className="animated-bg-container blur-[3px]" aria-hidden>
+      {/* Vertical accent bands (blue on the left, red on the right) */}
+      <div className="pointer-events-none absolute inset-y-0 left-[5%] flex items-stretch gap-6">
+        {/* <div className="w-[20px] h-full bg-[#003b78]" />
+        <div className="w-[20px] h-full bg-[#003b78]" /> */}
+        {/* <div className="w-[3px] h-full bg-[#2b6cb0]/35 blur-[0.6px] shadow-[0_0_18px_rgba(43,108,176,0.35)]" />
+        <div className="w-[2px] h-full bg-[#60a5fa]/25 blur-[1px]" /> */}
+      </div>
+      <div className="pointer-events-none absolute inset-y-0 right-[5%] flex items-stretch gap-6">
+        <div className="w-[20px] h-full bg-[#9b111e]" />
+        <div className="w-[20px] h-full bg-[#9b111e]" />
+        {/* <div className="w-[3px] h-full bg-[#ef4444]/30 blur-[0.6px] shadow-[0_0_18px_rgba(239,68,68,0.3)]" />
+        <div className="w-[2px] h-full bg-[#fca5a5]/20 blur-[1px]" /> */}
+      </div>
       {items.map((item, i) => (
         <div
           key={i}

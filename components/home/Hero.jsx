@@ -7,8 +7,8 @@ import Button from "../ui/Button.jsx";
 const Hero = () => {
   return (
     <section
-    //  className="relative h-[80vh] min-h-[600px] bg-secondary-900 overflow-hidden"
-     className="relative h-[80vh] min-h-[600px] bg-white dark:bg-secondary-900 overflow-hidden"
+     className="relative h-[80vh] min-h-[600px] bg-secondary-900 overflow-hidden"
+    //  className="relative h-[80vh] min-h-[600px] bg-white dark:bg-secondary-900 overflow-hidden"
     >
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">

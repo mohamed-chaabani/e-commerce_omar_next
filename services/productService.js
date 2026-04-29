@@ -41,7 +41,6 @@ export async function getCategoryBySlugFetch(slug) {
 }
 
 export async function getProductBySlugFetch(slug) {
-  console.log("slug", slug);  
   const res = await fetch(
     `${PRODUCTS_URL}/by-slug/${encodeURIComponent(slug)}`,
     {
@@ -51,7 +50,7 @@ export async function getProductBySlugFetch(slug) {
   );
   if (!res.ok) throw new Error("Failed to fetch product by slug");
   const data = await res.json();
-  console.log("data", data);
+
   return data || null;
 }
 

@@ -297,7 +297,9 @@ const ProductsPage = () => {
         {/* Filters - Mobile */}
         {isMobileFiltersOpen && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden">
-            <div className="bg-white dark:bg-secondary-900 h-full w-3/4 max-w-sm overflow-auto p-6">
+            <div
+              className="bg-white dark:bg-secondary-900 h-full w-3/4 max-w-sm overflow-auto p-6"
+            >
               <div className="flex justify-between items-center mb-6">
                 <h2 className="font-bold text-xl text-secondary-900 dark:text-white">
                   Filtres

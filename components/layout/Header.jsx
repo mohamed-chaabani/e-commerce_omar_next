@@ -198,7 +198,9 @@ const Header = () => {
                       exit={{ opacity: 0, y: 10, x: "-50%" }}
                       className="absolute top-full left-1/2 mt-2 w-screen bg-white/90 dark:bg-secondary-900/90 backdrop-blur-md rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 min-w-[800px] max-w-6xl max-h-[85vh] overflow-y-auto"
                     >
-                      <div className="p-6 bg-white dark:bg-secondary-900 rounded-lg shadow-xl">
+                      <div 
+                      className="p-6 bg-white dark:bg-secondary-900 rounded-lg shadow-xl"
+                      >
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                           {dropdownCategories.map((category) => (
                             <div key={category._id}>
@@ -297,7 +299,9 @@ const Header = () => {
 
           {/* Search Bar */}
           {isSearchOpen && (
-            <div className="absolute top-full left-0 right-0 bg-white dark:bg-secondary-900 shadow-md p-4 animate-fade-in">
+            <div 
+            className="absolute top-full left-0 right-0 bg-white dark:bg-secondary-900 shadow-md p-4 animate-fade-in"
+            >
               <form
                 className="flex items-center"
                 onSubmit={(e) => {
