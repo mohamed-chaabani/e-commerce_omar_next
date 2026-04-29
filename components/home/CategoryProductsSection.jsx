@@ -10,9 +10,7 @@ const CategoryProductsSection = ({ category }) => {
   }
 
   return (
-    <section
-      className="py-12  bg-white dark:bg-secondary-900"
-    >
+    <section className="py-12  bg-white dark:bg-secondary-900">
       <div className="container mx-auto px-4">
         <div className="mb-8">
           <div className="flex justify-between items-baseline mb-2">
@@ -26,7 +24,7 @@ const CategoryProductsSection = ({ category }) => {
               {category.category}
             </motion.h2>
             <Link
-              href={`/category/${encodeURIComponent(category.category)}`}
+              href={`/products?categoriesLvl2=${encodeURIComponent(category.category)}`}
               className="text-sm font-semibold text-customRed hover:text-red-700 dark:hover:text-red-400 transition-colors whitespace-nowrap"
             >
               Afficher tout &rarr;
