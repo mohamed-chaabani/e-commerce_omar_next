@@ -20,7 +20,10 @@ const CategoriesLvl3Grid = ({ category, index = 0 }) => {
           }
           className="block h-full"
         >
-          <div className="relative overflow-hidden  h-full shadow-sm group-hover:shadow-md transition-shadow duration-300">
+          <div 
+          // className="relative overflow-hidden  h-full shadow-sm group-hover:shadow-md transition-shadow duration-300"
+          className="group relative overflow-hidden h-full shadow-sm group-hover:shadow-md transition-shadow duration-300 rounded-[25px]"
+          >
             <div className="aspect-square md:aspect-[16/9]">
               <img
                 src={category.image}
