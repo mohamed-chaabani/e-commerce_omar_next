@@ -239,8 +239,13 @@ const NavLinks = ({
 
 const TopBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { totalItems = 0 } = useCart() || {};
   const { theme, toggleTheme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const {
     searchQuery,
     setSearchQuery,
@@ -583,11 +588,8 @@ const TopBar = () => {
                 className="p-2 rounded-full text-white hover:bg-red-900 transition-colors relative"
               >
                 <ShoppingBag size={20} />
-                {totalItems > 0 && (
-                  <span
-                    className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-                    suppressHydrationWarning
-                  >
+                {mounted && totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
