@@ -88,18 +88,20 @@ async function ProductDetailData({ slug }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 mt-12">
-      <div className="mb-8">
-        <Link
-          href="/products"
-          className="inline-flex items-center text-secondary-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-        >
-          <ArrowLeft size={16} className="mr-2" />
-          Retour aux produits
-        </Link>
-      </div>
+    <div className="bg-white dark:bg-secondary-900 min-h-screen">
+      <div className="container mx-auto px-4 py-12 mt-12">
+        <div className="mb-8">
+          <Link
+            href="/products"
+            className="inline-flex items-center text-secondary-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+          >
+            <ArrowLeft size={16} className="mr-2" />
+            Retour aux produits
+          </Link>
+        </div>
 
-      <ProductDetail product={product} />
+        <ProductDetail product={product} />
+      </div>
     </div>
   );
 }

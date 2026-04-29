@@ -116,135 +116,139 @@ const ProductsClient = ({
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 mt-12 ">
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Filters - Mobile */}
-        {isMobileFiltersOpen && (
-          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden">
-            <div className="bg-white dark:bg-secondary-900 h-full w-3/4 max-w-sm overflow-auto p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="font-bold text-xl text-secondary-900 dark:text-white">
-                  Filtres
-                </h2>
-                <button onClick={toggleMobileFilters}>
-                  <X className="w-5 h-5 text-secondary-900 dark:text-white" />
-                </button>
-              </div>
+    <div className="bg-white dark:bg-secondary-900 min-h-screen">
+      <div className="container mx-auto px-4 py-12 mt-12">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Filters - Mobile */}
+          {isMobileFiltersOpen && (
+            <div className="fixed inset-0 z-50 bg-black bg-opacity-50 md:hidden">
+              <div className="bg-white dark:bg-secondary-900 h-full w-3/4 max-w-sm overflow-auto p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="font-bold text-xl text-secondary-900 dark:text-white">
+                    Filtres
+                  </h2>
+                  <button onClick={toggleMobileFilters}>
+                    <X className="w-5 h-5 text-secondary-900 dark:text-white" />
+                  </button>
+                </div>
 
+                <div className="mb-6">
+                  <h3 className="font-medium text-lg text-secondary-900 dark:text-white mb-4">
+                    Catégories
+                  </h3>
+                  <ul className="space-y-2">
+                    <li>
+                      <button
+                        onClick={() => handleCategoryFilter(null)}
+                        className={`text-left w-full ${
+                          activeCategory === null
+                            ? "text-primary-600 dark:text-primary-400 font-medium"
+                            : "text-secondary-700 dark:text-gray-300"
+                        }`}
+                      >
+                        Tous les produits
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Product Grid */}
+          <div className="flex-1">
+            {/* Category Header */}
+            {categoryName && (
               <div className="mb-6">
-                <h3 className="font-medium text-lg text-secondary-900 dark:text-white mb-4">
-                  Catégories
-                </h3>
-                <ul className="space-y-2">
-                  <li>
-                    <button
-                      onClick={() => handleCategoryFilter(null)}
-                      className={`text-left w-full ${
-                        activeCategory === null
-                          ? "text-primary-600 dark:text-primary-400 font-medium"
-                          : "text-secondary-700 dark:text-gray-300"
-                      }`}
-                    >
-                      Tous les produits
-                    </button>
-                  </li>
-                </ul>
+                <a
+                  href="/products"
+                  className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-4 transition-colors"
+                >
+                  ← Retour aux produits
+                </a>
+                <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-white">
+                  {categoryName}
+                </h1>
+                <p className="text-secondary-600 dark:text-gray-400 mt-2">
+                  {total} produit{total !== 1 ? "s" : ""} disponible
+                  {total !== 1 ? "s" : ""}
+                </p>
               </div>
-            </div>
+            )}
+
+            {filteredProducts.length === 0 ? (
+              <div className="text-center py-16">
+                <h2 className="text-2xl font-semibold text-secondary-900 dark:text-white mb-2">
+                  Aucun produit trouvé
+                </h2>
+              </div>
+            ) : (
+              <ProductGrid
+                promo={true}
+                nouveau={true}
+                products={filteredProducts}
+              />
+            )}
+
+            {pages > 1 && (
+              <div className="mt-10 flex flex-col items-center justify-center gap-3 relative">
+                <div className="inline-flex overflow-hidden rounded-md border border-gray-300 dark:border-secondary-700">
+                  <button
+                    type="button"
+                    aria-label="Previous page"
+                    onClick={() => setPageInUrl(page - 1)}
+                    disabled={page <= 1}
+                    className="w-10 h-10 flex items-center justify-center bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    ‹
+                  </button>
+
+                  {getPaginationItems(page, pages).map((item, idx) =>
+                    item === "..." ? (
+                      <div
+                        key={`ellipsis-${idx}`}
+                        className="w-10 h-10 flex items-center justify-center bg-white dark:bg-secondary-800 text-secondary-700 dark:text-gray-300"
+                      >
+                        ...
+                      </div>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        aria-current={
+                          Number(item) === page ? "page" : undefined
+                        }
+                        aria-label={`Page ${item}`}
+                        onClick={() => setPageInUrl(item)}
+                        disabled={Number(item) === page}
+                        className={`w-10 h-10 flex items-center justify-center border-l border-gray-300 dark:border-secondary-700 text-secondary-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:pointer-events-none ${
+                          Number(item) === page
+                            ? "bg-customRed text-white dark:bg-customRed dark:text-white font-semibold"
+                            : "bg-white dark:bg-secondary-800 hover:bg-gray-50 dark:hover:bg-secondary-700"
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    ),
+                  )}
+
+                  <button
+                    type="button"
+                    aria-label="Next page"
+                    onClick={() => setPageInUrl(page + 1)}
+                    disabled={page >= pages}
+                    className="w-10 h-10 flex items-center justify-center border-l border-gray-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  >
+                    ›
+                  </button>
+                </div>
+
+                <div className="text-xs text-secondary-700 dark:text-gray-300">
+                  {total} produits
+                </div>
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Product Grid */}
-        <div className="flex-1">
-          {/* Category Header */}
-          {categoryName && (
-            <div className="mb-6">
-              <a
-                href="/products"
-                className="inline-flex items-center text-primary-600 hover:text-primary-700 mb-4 transition-colors"
-              >
-                ← Retour aux produits
-              </a>
-              <h1 className="text-3xl md:text-4xl font-bold text-secondary-900 dark:text-white">
-                {categoryName}
-              </h1>
-              <p className="text-secondary-600 dark:text-gray-400 mt-2">
-                {total} produit{total !== 1 ? "s" : ""} disponible
-                {total !== 1 ? "s" : ""}
-              </p>
-            </div>
-          )}
-
-          {filteredProducts.length === 0 ? (
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-semibold text-secondary-900 dark:text-white mb-2">
-                Aucun produit trouvé
-              </h2>
-            </div>
-          ) : (
-            <ProductGrid
-              promo={true}
-              nouveau={true}
-              products={filteredProducts}
-            />
-          )}
-
-          {pages > 1 && (
-            <div className="mt-10 flex flex-col items-center justify-center gap-3 relative">
-              <div className="inline-flex overflow-hidden rounded-md border border-gray-300 dark:border-secondary-700">
-                <button
-                  type="button"
-                  aria-label="Previous page"
-                  onClick={() => setPageInUrl(page - 1)}
-                  disabled={page <= 1}
-                  className="w-10 h-10 flex items-center justify-center bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  ‹
-                </button>
-
-                {getPaginationItems(page, pages).map((item, idx) =>
-                  item === "..." ? (
-                    <div
-                      key={`ellipsis-${idx}`}
-                      className="w-10 h-10 flex items-center justify-center bg-white dark:bg-secondary-800 text-secondary-700 dark:text-gray-300"
-                    >
-                      ...
-                    </div>
-                  ) : (
-                    <button
-                      key={item}
-                      type="button"
-                      aria-current={Number(item) === page ? "page" : undefined}
-                      aria-label={`Page ${item}`}
-                      onClick={() => setPageInUrl(item)}
-                      disabled={Number(item) === page}
-                      className={`w-10 h-10 flex items-center justify-center border-l border-gray-300 dark:border-secondary-700 text-secondary-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:pointer-events-none ${
-                        Number(item) === page
-                          ? "bg-customRed text-white dark:bg-customRed dark:text-white font-semibold"
-                          : "bg-white dark:bg-secondary-800 hover:bg-gray-50 dark:hover:bg-secondary-700"
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  ),
-                )}
-
-                <button
-                  type="button"
-                  aria-label="Next page"
-                  onClick={() => setPageInUrl(page + 1)}
-                  disabled={page >= pages}
-                  className="w-10 h-10 flex items-center justify-center border-l border-gray-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  ›
-                </button>
-              </div>
-
-              <div className="text-xs text-secondary-700 dark:text-gray-300">
-                {total} produits
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

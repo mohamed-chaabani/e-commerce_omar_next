@@ -5,8 +5,10 @@ import CheckoutPage from "@/pages/CheckoutPage";
 
 export default function CheckoutRoute() {
   return (
-    <Suspense fallback={<div>Chargement...</div>}>
-      <CheckoutPage />
-    </Suspense>
+    <div className="bg-white dark:bg-secondary-900 min-h-screen">
+      <Suspense fallback={<div>Chargement...</div>}>
+        <CheckoutPage />
+      </Suspense>
+    </div>
   );
 }

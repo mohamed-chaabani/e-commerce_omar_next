@@ -95,7 +95,7 @@ async function CategoryProductsData({ slug, searchParams }) {
   const productName = queryParams?.productName;
   const page = Math.max(1, Number(queryParams?.page) || 1);
 
-  console.log("slug", slug);
+
 
   // Get category
   let category = null;
@@ -105,7 +105,7 @@ async function CategoryProductsData({ slug, searchParams }) {
     console.error("Error fetching category:", e);
   }
 
-  console.log("category", category);
+
 
   // Fetch products
   let data = { products: [], pages: 1, total: 0 };
