@@ -25,19 +25,40 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "smap",
-
+  title: {
+    default: "Smap Auto Pro - Pièces Détachées Automobiles | Tunisie",
+    template: "%s | Smap Auto Pro",
+  },
   description:
-    "Société spécialisée dans la vente et la distribution de pièces détachées automobiles, proposant également un service de vente en ligne. ",
-
+    "Société spécialisée dans la vente et la distribution de pièces détachées automobiles, proposant également un service de vente en ligne. Livraison rapide en Tunisie.",
+  keywords: [
+    "pièces auto",
+    "pièces détachées",
+    "automobile",
+    "Tunisie",
+    "Smap Auto Pro",
+    "vente pièces",
+    "distribution pièces",
+  ],
   icons: {
     icon: "/images/icon%20blanc.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "fr_TN",
+    siteName: "Smap Auto Pro",
+    title: "Smap Auto Pro - Pièces Détachées Automobiles",
+    description:
+      "Société spécialisée dans la vente et la distribution de pièces détachées automobiles. Livraison rapide en Tunisie.",
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <head>
         <link
           rel="stylesheet"

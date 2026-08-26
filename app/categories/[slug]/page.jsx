@@ -22,10 +22,13 @@ export async function generateMetadata({ params }) {
   const categoryName = categoryLvl3?.name || slug;
 
   return {
-    title: `${categoryName} | Smap Auto Pro`,
+    title: `${categoryName}`,
     description: categoryLvl3?.name
       ? `Découvrez tous nos produits ${categoryLvl3.name}. Large choix de pièces détachées ${categoryLvl3?.categories_list?.map((cat) => cat.name).join(", ")} avec livraison rapide en Tunisie.`
       : "Parcourez notre collection complète de produits organisés par catégories.",
+    alternates: {
+      canonical: `/categories/${slug}`,
+    },
   };
 }
 

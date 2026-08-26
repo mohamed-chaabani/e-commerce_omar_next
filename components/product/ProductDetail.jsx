@@ -547,11 +547,12 @@ const ProductDetail = ({ product }) => {
                     className="absolute right-0 sm:left-0 mt-2 w-48 bg-white dark:bg-secondary-800 rounded-lg shadow-xl border border-gray-200 dark:border-secondary-700 overflow-hidden z-50"
                   >
                     <div className="py-1">
-                      <WhatsappShareButton
-                        url={shareUrl}
-                        title={`${shareTitle}\n${shareDesc}`}
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(`${shareTitle}\n${shareUrl}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => setIsShareMenuOpen(false)}
-                        className="w-full"
+                        className="block w-full"
                       >
                         <div className="flex items-center w-full px-4 py-3 text-sm text-secondary-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-secondary-700 transition-colors">
                           <MessageCircle
@@ -560,13 +561,14 @@ const ProductDetail = ({ product }) => {
                           />
                           <span className="font-medium">WhatsApp</span>
                         </div>
-                      </WhatsappShareButton>
+                      </a>
 
-                      <FacebookShareButton
-                        url={shareUrl}
-                        hashtag="#SmapAutoPro"
+                      <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareTitle)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => setIsShareMenuOpen(false)}
-                        className="w-full"
+                        className="block w-full"
                       >
                         <div className="flex items-center w-full px-4 py-3 text-sm text-secondary-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-secondary-700 transition-colors">
                           <svg
@@ -578,7 +580,7 @@ const ProductDetail = ({ product }) => {
                           </svg>
                           <span className="font-medium">Facebook</span>
                         </div>
-                      </FacebookShareButton>
+                      </a>
 
                       <button
                         onClick={handleCopyLink}

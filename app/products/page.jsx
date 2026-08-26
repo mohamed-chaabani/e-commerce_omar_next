@@ -95,6 +95,9 @@ export async function generateMetadata({ searchParams }) {
     title,
     description,
     keywords,
+    alternates: {
+      canonical: "/products",
+    },
   };
 }
 

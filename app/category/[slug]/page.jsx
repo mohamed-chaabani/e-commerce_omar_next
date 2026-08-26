@@ -87,6 +87,9 @@ export async function generateMetadata({ params, searchParams }) {
     title,
     description,
     keywords,
+    alternates: {
+      canonical: `/category/${slug}`,
+    },
   };
 }
 
