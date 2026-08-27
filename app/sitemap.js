@@ -29,7 +29,7 @@ async function fetchCategoriesLvl3() {
 }
 
 export default async function sitemap() {
-  const baseUrl = "https://smap-auto-pro.vercel.app";
+  const baseUrl = "https://e-commerce-omar-next.vercel.app";
 
   const [products, categoriesLvl3] = await Promise.all([
     fetchProducts(),

@@ -4,4 +4,4 @@ Disallow: /cart
 Disallow: /checkout
 Disallow: /api
 
-Sitemap: https://smap-auto-pro.vercel.app/sitemap.xml
+Sitemap: https://e-commerce-omar-next.vercel.app/sitemap.xml
